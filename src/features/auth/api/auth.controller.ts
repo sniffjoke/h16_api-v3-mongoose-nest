@@ -12,6 +12,7 @@ import {
 } from "./models/input/auth.input.model";
 import { AuthOutputModel, RecoveryPasswordModel } from "./models/output/auth.output.model";
 import { JwtAuthGuard } from "../../../core/guards/jwt-auth.guard";
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller("auth")
 export class AuthController {
@@ -32,6 +33,7 @@ export class AuthController {
   // @UsePipes(ValidationPipe)
   @Post("login")
   @HttpCode(200)
+  @UseGuards(ThrottlerGuard)
   async login(
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) response: Response
@@ -50,6 +52,7 @@ export class AuthController {
   // @UsePipes(ValidationPipe)
   @Post("registration")
   @HttpCode(204)
+  @UseGuards(ThrottlerGuard)
   async register(@Body() dto: UserCreateModel) {
     const userId = await this.usersService.createUser(dto, false)
     const newUser = await this.usersQueryRepository.userOutput(userId)
@@ -59,6 +62,7 @@ export class AuthController {
   // @UsePipes(ValidationPipe)
   @Post("registration-confirmation")
   @HttpCode(204)
+  @UseGuards(ThrottlerGuard)
   // @UseFilters(NotFoundExceptionFilter)
   async activateEmail(@Body() dto: ActivateAccountDto) {
     return await this.usersService.activateEmail(dto.code)
@@ -67,6 +71,7 @@ export class AuthController {
   // @UsePipes(ValidationPipe)
   @Post("registration-email-resending")
   @HttpCode(204)
+  @UseGuards(ThrottlerGuard)
   async resendEmail(@Body() dto: ResendActivateCodeDto) {
     return await this.usersService.resendEmail(dto.email)
   }

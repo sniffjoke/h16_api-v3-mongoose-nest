@@ -96,11 +96,6 @@ export class UsersService {
     });
   }
 
-  // private async findUserInDbByCode(confirmationCode: string) {
-  //   const checkActivate = await this.userModel.findOne({ "emailConfirmation.confirmationCode": confirmationCode });
-  //   return checkActivate;
-  // }
-
   async resendEmail(email: string) {
     const checkStatus = await this.usersRepository.checkUserStatus(email);
     const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(false);

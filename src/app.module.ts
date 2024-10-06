@@ -11,9 +11,14 @@ import { TokensModule } from "./features/tokens/tokens.module";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { SETTINGS } from "./core/settings/settings";
 import { BlogIsExistConstraint } from './core/decorators/async-validate/blog-is-exist.decorator';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 10000,
+      limit: 5
+    }]),
     ConfigModule.forRoot({
       envFilePath: ".development.env",
       isGlobal: true,
