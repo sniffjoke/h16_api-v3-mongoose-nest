@@ -12,7 +12,7 @@ import {
 } from "./models/input/auth.input.model";
 import { AuthOutputModel, RecoveryPasswordModel } from "./models/output/auth.output.model";
 import { JwtAuthGuard } from "../../../core/guards/jwt-auth.guard";
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller("auth")
 export class AuthController {

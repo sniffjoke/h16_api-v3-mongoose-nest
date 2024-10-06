@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { HydratedDocument, Model } from "mongoose";
 import {User} from "../domain/users.entity";
 import { InjectModel } from "@nestjs/mongoose";
@@ -81,7 +81,7 @@ export class UsersRepository {
         //     throw new NotFoundException("User not found")
         // }
         if (findedUser.emailConfirmation.isConfirmed) {
-            throw new NotFoundException("User already confirmed")
+            throw new BadRequestException("User already confirmed")
         }
         return findedUser
     }
