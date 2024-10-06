@@ -42,7 +42,7 @@ export class UsersRepository {
     async findUserByCode(code: string) {
         const findedUser = await this.userModel.findOne({"emailConfirmation.confirmationCode": code})
         if (!findedUser) {
-            throw new NotFoundException("User not found")
+            throw new BadRequestException("User with this code not found")
         }
         return findedUser
     }
