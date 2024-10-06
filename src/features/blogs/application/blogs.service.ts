@@ -24,21 +24,21 @@ export class BlogsService {
         if (!blog) {
             throw new NotFoundException(`Blog with id ${id} not found`)
         }
-        const updateBlog = await this.blogModel.updateOne({_id: blog._id}, {$set: {...dto}})
+        const updateBlog = await this.blogsRepository.updateBlogById(blog.id, dto)
         return updateBlog
     }
 
     async deleteBlog(id: string) {
-        const findedBlog = await this.blogModel.findById(id)
+        const findedBlog = await this.blogsRepository.findBlogById(id)
         if (!findedBlog) {
             throw new NotFoundException(`Blog with id ${id} not found`)
         }
-        const deleteBlog = await this.blogModel.deleteOne({_id: id})
+        const deleteBlog = await this.blogsRepository.deleteBlog(id)
         return deleteBlog
     }
 
     async findBlogById(id: string) {
-        const findedBlog = await this.blogModel.findById(id)
+        const findedBlog = await this.blogsRepository.findBlogById(id)
         if (!findedBlog) {
             throw new NotFoundException(`Blog with id ${id} not found`)
         }

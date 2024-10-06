@@ -164,4 +164,12 @@ export class UsersService {
     return updateUserInfo;
   }
 
+  async findUserById(id: string) {
+    const findedUser = await this.usersRepository.findUserById(id)
+    if (!findedUser) {
+      throw new NotFoundException('User with id ${id} not found')
+    }
+    return findedUser
+  }
+
 }

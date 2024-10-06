@@ -13,11 +13,6 @@ export class BlogsQueryRepository {
     ) {
     }
 
-    // async getAllBlogs(query: any): Promise<BlogViewModel[]> {
-    //     const blogs = await this.blogModel.find()
-    //     return blogs.map(blog => this.blogOutputMap(blog as HydratedDocument<BlogViewModel>))
-    // }
-
     async getAllBlogsWithQuery(query: any) {
         const generateQuery = await this.generateQuery(query)
         const items = await this.blogModel

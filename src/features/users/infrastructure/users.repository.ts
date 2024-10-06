@@ -18,6 +18,11 @@ export class UsersRepository {
         return saveUser
     }
 
+    async findUserById(id: string) {
+        const findedUser = await this.userModel.findOne({_id: id})
+        return findedUser
+    }
+
     async findUserByLogin(loginValue: string) {
         const findedUser = await this.userModel.findOne({login: loginValue})
         if (!findedUser) {

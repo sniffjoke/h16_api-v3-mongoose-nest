@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {Blog} from "../domain/blogs.entity";
-import { HydratedDocument, Model, Types } from 'mongoose';
+import { HydratedDocument, Model, UpdateWriteOpResult } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { BlogCreateModel } from '../api/models/input/create-blog.input.model';
 
 
 @Injectable()
@@ -17,12 +18,17 @@ export class BlogsRepository {
     }
 
     async findBlogById(id: string) {
-        const findedBlog = await this.blogModel.findById(id)
-        if (!findedBlog) {
-            throw new BadRequestException("Blog not found")
-        }
+        const findedBlog = await this.blogModel.findOne({_id: id})
         return findedBlog
     }
 
+    async updateBlogById(id: string, dto: BlogCreateModel): Promise<UpdateWriteOpResult> {
+        const updateBlog = await this.blogModel.updateOne({_id: id}, {$set: {...dto}})
+        return updateBlog
+    }
 
+    async deleteBlog(id: string) {
+        const deleteBlog = await this.blogModel.deleteOne({_id: id})
+        return deleteBlog
+    }
 }

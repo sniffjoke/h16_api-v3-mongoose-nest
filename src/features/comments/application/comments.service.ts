@@ -4,7 +4,6 @@ import { HydratedDocument, isValidObjectId, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CommentEntity } from '../domain/comments.entity';
 import { CommentCreateModel } from '../api/models/input/create-comment.input.model';
-import { PostsService } from '../../posts/application/posts.service';
 import { User } from '../../users/domain/users.entity';
 import { TokensService } from '../../tokens/application/tokens.service';
 import { LikeEntity } from '../../likes/domain/likes.entity';
@@ -12,6 +11,7 @@ import { LikeStatus } from '../../posts/api/models/output/post.view.model';
 import { CommentViewModel } from '../api/models/output/comment.view.model';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { UsersCheckHandler } from '../../users/domain/users.check-handler';
+import { PostsRepository } from '../../posts/infrastructure/posts.repository';
 
 @Injectable()
 export class CommentsService {
@@ -20,7 +20,7 @@ export class CommentsService {
     @InjectModel('User') private readonly userModel: Model<User>,
     @InjectModel('LikeEntity') private readonly likeModel: Model<LikeEntity>,
     private readonly commentsRepository: CommentsRepository,
-    private readonly postsService: PostsService,
+    private readonly postsRepository: PostsRepository,
     private readonly tokensService: TokensService,
     private readonly usersRepository: UsersRepository,
     private readonly usersCheckHandler: UsersCheckHandler,
@@ -34,7 +34,7 @@ export class CommentsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const findedPost = await this.postsService.findPostById(postId);
+    const findedPost = await this.postsRepository.findPostById(postId);
     if (!findedPost) {
       throw new NotFoundException('Post not found');
     }
