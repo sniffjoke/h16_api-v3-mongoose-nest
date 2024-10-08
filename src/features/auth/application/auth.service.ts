@@ -39,7 +39,7 @@ export class AuthService {
             title: userAgent,
             lastActiveDate: new Date(Date.now()).toISOString(),
         }
-        const {accessToken, refreshToken} = this.tokensService.createTokens(findedUser._id.toString());
+        const {accessToken, refreshToken} = this.tokensService.createTokens(findedUser._id.toString(), deviceData.deviceId);
         if (findSession) {
             await this.devicesService.updateDeviceById({_id: findSession._id}, {
                 $set: {
@@ -128,7 +128,9 @@ export class AuthService {
 
     async logoutUser(tokenHeaderR: any) {
         const token = this.tokensService.getTokenFromCookie(tokenHeaderR)
+        console.log(token);
         const tokenValidate: any = this.tokensService.validateRefreshToken(token)
+        console.log(tokenValidate);
         if (!tokenValidate) {
             throw new UnauthorizedException('Invalid refresh token')
         }
@@ -136,6 +138,7 @@ export class AuthService {
         if (!isTokenExists || isTokenExists.blackList) {
             throw new UnauthorizedException('Refresh token not valid')
         }
+        console.log({deviceId: tokenValidate.deviceId});
         const updateTokenInfo = await this.tokensService.updateManyTokensInDb({deviceId: tokenValidate.deviceId}, {$set: {blackList: true}})
         if (!updateTokenInfo) {
             throw new UnauthorizedException('Something went wrong')

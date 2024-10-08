@@ -14,6 +14,7 @@ export class TokensService {
   }
 
   createTokens(userId: string, deviceId?: string) {
+    console.log('deviceIdForCreateTokens: ', deviceId);
     const [accessToken, refreshToken] = [
       this.jwtService.sign(
         {
