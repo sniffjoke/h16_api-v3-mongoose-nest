@@ -87,6 +87,12 @@ export class DevicesService {
 
   async updateDeviceById(filter: any, payload: any) {
     const updateDevice = await this.deviceModel.updateOne(filter, payload)
+    return updateDevice
+  }
+
+  async findAndUpdateDeviceById(filter: any, payload: any) {
+    const updateDevice = await this.deviceModel.findOneAndUpdate(filter, payload)
+    return updateDevice
   }
 
 }

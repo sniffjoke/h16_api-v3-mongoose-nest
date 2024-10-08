@@ -5,8 +5,11 @@ import mongoose from "mongoose";
 @Schema({timestamps: {updatedAt: false}, versionKey: false})
 export class TokenEntity {
 
-    @Prop({type: mongoose.Types.ObjectId, required: true, default: '2jk32i2ojiso324'})
+    @Prop({type: mongoose.Types.ObjectId, required: true})
     userId: string;
+
+    @Prop({type: String, required: true})
+    deviceId: string;
 
     @Prop({type: String, required: true})
     refreshToken: string;

@@ -13,7 +13,7 @@ export class TokensService {
   ) {
   }
 
-  createTokens(userId: string) {
+  createTokens(userId: string, deviceId?: string) {
     const [accessToken, refreshToken] = [
       this.jwtService.sign(
         {
@@ -26,7 +26,8 @@ export class TokensService {
       ),
       this.jwtService.sign(
         {
-          _id: userId
+          _id: userId,
+          deviceId
         },
         {
           secret: SETTINGS.VARIABLES.JWT_SECRET_REFRESH_TOKEN,
@@ -85,6 +86,11 @@ export class TokensService {
 
   async updateManyTokensInDb(filter: any, payload: any) {
     const updateTokens = await this.tokensModel.updateMany(filter, payload)
+    return updateTokens
+  }
+
+  async updateOneTokenInDb(filter: any, payload: any) {
+    const updateTokens = await this.tokensModel.updateOne(filter, payload)
     return updateTokens
   }
 

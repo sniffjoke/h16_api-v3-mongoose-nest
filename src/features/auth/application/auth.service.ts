@@ -86,4 +86,44 @@ export class AuthService {
         }
     }
 
+    async refreshToken(tokenHeaderR: string) {
+        const token = this.tokensService.getTokenFromCookie(tokenHeaderR)
+        const tokenValidate: any = this.tokensService.validateRefreshToken(token)
+        if (!tokenValidate) {
+            throw new UnauthorizedException('Invalid refresh token')
+        }
+        const isTokenExists: any = await this.tokensService.findToken({ refreshToken: token })
+        if (!isTokenExists || isTokenExists.blackList) {
+            throw new UnauthorizedException('Refresh token not valid')
+        }
+        const updateTokenInfo = await this.tokensService.updateManyTokensInDb({refreshToken: token}, {$set: {blackList: true}})
+        if (!updateTokenInfo) {
+            throw new UnauthorizedException('Something went wrong')
+        }
+        const {refreshToken, accessToken} = this.tokensService.createTokens(isTokenExists.userId, tokenValidate.deviceId)
+        const tokenData = {
+            userId: isTokenExists.userId,
+            refreshToken,
+            blackList: false,
+            deviceId: isTokenExists.deviceId
+        }
+        const addTokenToDb = await this.tokensService.saveToken(tokenData)
+        if (!addTokenToDb) {
+            throw new UnauthorizedException('Unfortunate to refresh token')
+        }
+        const findSessionAndUpdate = await this.devicesService.findAndUpdateDeviceById({userId: isTokenExists.userId, deviceId: isTokenExists.deviceId}, {
+            $set: {
+                lastActiveDate: new Date(Date.now()).toISOString(),
+            }
+        })
+        if (!findSessionAndUpdate) {
+            throw new UnauthorizedException('Not updated session')
+        }
+        return {
+            refreshToken,
+            accessToken
+        }
+
+    }
+
 }

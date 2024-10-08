@@ -1,32 +1,32 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { AuthService } from "../application/auth.service";
-import { Request, Response } from "express";
-import { UserCreateModel } from "../../users/api/models/input/create-user.input.model";
-import { UsersService } from "../../users/application/users.service";
-import { UsersQueryRepository } from "../../users/infrastructure/users.query-repository";
+import { AuthService } from '../application/auth.service';
+import { Request, Response } from 'express';
+import { UserCreateModel } from '../../users/api/models/input/create-user.input.model';
+import { UsersService } from '../../users/application/users.service';
+import { UsersQueryRepository } from '../../users/infrastructure/users.query-repository';
 import {
   ActivateAccountDto,
   LoginDto,
   PasswordRecoveryDto,
-  ResendActivateCodeDto
-} from "./models/input/auth.input.model";
-import { AuthOutputModel, RecoveryPasswordModel } from "./models/output/auth.output.model";
-import { JwtAuthGuard } from "../../../core/guards/jwt-auth.guard";
+  ResendActivateCodeDto,
+} from './models/input/auth.input.model';
+import { AuthOutputModel, RecoveryPasswordModel } from './models/output/auth.output.model';
+import { JwtAuthGuard } from '../../../core/guards/jwt-auth.guard';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { UserAgent } from '../../../core/decorators/common/user-agent.decorator';
 import { IpAddress } from '../../../core/decorators/common/ip-address.decorator';
 
 
-@Controller("auth")
+@Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
-    private readonly usersQueryRepository: UsersQueryRepository
+    private readonly usersQueryRepository: UsersQueryRepository,
   ) {
   }
 
-  @Get("me")
+  @Get('me')
   @UseGuards(JwtAuthGuard)
   async getMe(@Req() req: Request) {
     const userData = await this.authService.getMe(req.headers.authorization as string);
@@ -34,7 +34,7 @@ export class AuthController {
   }
 
   // @UsePipes(ValidationPipe)
-  @Post("login")
+  @Post('login')
   @HttpCode(200)
   @UseGuards(ThrottlerGuard)
   async login(
@@ -48,34 +48,37 @@ export class AuthController {
     response.cookie('refreshToken', refreshToken, {
       secure: true,
       httpOnly: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000
-    })
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
     return {
-      accessToken
+      accessToken,
     };
   }
 
   // @UsePipes(ValidationPipe)
-  @Post("registration")
+  @Post('registration')
   @HttpCode(204)
   @UseGuards(ThrottlerGuard)
   async register(@Body() dto: UserCreateModel) {
-    const userId = await this.usersService.createUser(dto, false)
-    const newUser = await this.usersQueryRepository.userOutput(userId)
-    return newUser
+    const userId = await this.usersService.createUser(dto, false);
+    const newUser = await this.usersQueryRepository.userOutput(userId);
+    return newUser;
   }
 
-  // async refreshToken(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const {refreshToken, accessToken} = await authService.refreshToken(req.cookies.refreshToken)
-  //     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true})
-  //     res.status(200).json({accessToken})
-  //   } catch (e) {
-  //     next(e)
-  //   }
-  // }
-  //
-  //
+  @Post('refresh-token')
+  async refreshToken(@Req() req: Request, @Res({ passthrough: true }) response: Response) {
+    const { refreshToken, accessToken } = await this.authService.refreshToken(req.cookies);
+    response.cookie('refreshToken', refreshToken, {
+      secure: true,
+      httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+    return {
+      accessToken,
+    };
+  }
+
+
   // async logout(req: Request, res: Response, next: NextFunction) {
   //   try {
   //     await authService.logoutUser(req.cookies.refreshToken as string)
@@ -87,31 +90,31 @@ export class AuthController {
   // }
 
   // @UsePipes(ValidationPipe)
-  @Post("registration-confirmation")
+  @Post('registration-confirmation')
   @HttpCode(204)
   @UseGuards(ThrottlerGuard)
   // @UseFilters(NotFoundExceptionFilter)
   async activateEmail(@Body() dto: ActivateAccountDto) {
-    return await this.usersService.activateEmail(dto.code)
+    return await this.usersService.activateEmail(dto.code);
   }
 
   // @UsePipes(ValidationPipe)
-  @Post("registration-email-resending")
+  @Post('registration-email-resending')
   @HttpCode(204)
   @UseGuards(ThrottlerGuard)
   async resendEmail(@Body() dto: ResendActivateCodeDto) {
-    return await this.usersService.resendEmail(dto.email)
+    return await this.usersService.resendEmail(dto.email);
   }
 
-  @Post("password-recovery")
+  @Post('password-recovery')
   @HttpCode(204)
   async passwordRecovery(@Body() dto: PasswordRecoveryDto) {
-    return await this.usersService.passwordRecovery(dto.email)
+    return await this.usersService.passwordRecovery(dto.email);
   }
 
-  @Post("new-password")
+  @Post('new-password')
   async newPasswordApprove(@Body() recoveryPasswordData: RecoveryPasswordModel) {
-    return await this.usersService.approveNewPassword(recoveryPasswordData)
+    return await this.usersService.approveNewPassword(recoveryPasswordData);
   }
 
 }
