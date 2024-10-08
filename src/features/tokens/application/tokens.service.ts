@@ -69,6 +69,11 @@ export class TokensService {
     return token;
   }
 
+  getTokenFromCookie(bearerHeaderR: any) {
+    const tokenValue = Object.values(bearerHeaderR)
+    return tokenValue[0] as string;
+  }
+
   decodeToken(token: string) {
     return this.jwtService.decode(token);
   }

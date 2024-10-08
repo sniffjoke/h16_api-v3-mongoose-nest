@@ -12,6 +12,7 @@ import { MailerModule } from "@nestjs-modules/mailer";
 import { SETTINGS } from "./core/settings/settings";
 import { BlogIsExistConstraint } from './core/decorators/async-validate/blog-is-exist.decorator';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { DevicesModule } from './features/devices/devices.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
     CommentsModule,
     TestingModule,
     AuthModule,
-    TokensModule
+    TokensModule,
+    DevicesModule
   ],
   controllers: [],
   providers: [

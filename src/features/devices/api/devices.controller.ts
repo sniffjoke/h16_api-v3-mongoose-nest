@@ -13,11 +13,11 @@ export class DevicesController {
 
   @Get('devices')
   async getDevices(@Req() req: Request) {
-    const devices = await this.devicesService.getDevices(req.cookies  )
+    const devices = await this.devicesService.getDevices(req.cookies)
     return devices
   }
 
-  @Delete(':id')
+  @Delete('devices/:id')
   async deleteSessionById(@Req() req: Request, @Param('id') id: string) {
     const deleteDevice = await this.devicesService.deleteDeviceByDeviceIdField(req.cookies, id)
     return deleteDevice

@@ -5,6 +5,7 @@ import {SETTINGS} from "./core/settings/settings";
 import { useContainer } from "class-validator";
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { BadRequestExceptionFilter } from './core/exceptions/exception-filters/bad-request-exception-filter';
+import cookieParser from 'cookie-parser'
 import * as requestIp from 'request-ip'
 
 async function bootstrap() {
@@ -15,7 +16,7 @@ async function bootstrap() {
   app.use(cors({
     // credentials: true,
   }))
-  app.useGlobalFilters(new BadRequestExceptionFilter())
+  // app.useGlobalFilters(new BadRequestExceptionFilter())
   useContainer(app.select(AppModule), {fallbackOnErrors: true})
   app.useGlobalPipes(
     new ValidationPipe({
@@ -37,7 +38,7 @@ async function bootstrap() {
     }),
   );
   app.use(requestIp.mw())
+  app.use(cookieParser())
   await app.listen(SETTINGS.PORT, () => console.log('DB connect'));
-  // app.use(cookieParser())
 }
 bootstrap();

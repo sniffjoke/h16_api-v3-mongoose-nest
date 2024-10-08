@@ -20,7 +20,7 @@ export class DevicesService {
   }
 
   async getDevices(bearerHeaderR: string) {
-    const token = this.tokensService.getToken(bearerHeaderR);
+    const token = this.tokensService.getTokenFromCookie(bearerHeaderR);
     const validateToken: any = this.tokensService.validateRefreshToken(token);
     if (!validateToken) {
       throw new UnauthorizedException('Invalid refresh token');
@@ -29,7 +29,7 @@ export class DevicesService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const devices = await this.deviceModel.find({ userId: user.id });
+    const devices = await this.deviceModel.find({ userId: user._id });
     const deviceMap = (device: any) => ({
       deviceId: device.deviceId,
       ip: device.ip,
@@ -43,7 +43,7 @@ export class DevicesService {
   }
 
   async deleteDeviceByDeviceIdField(bearerHeaderR: string, deviceId: string) {
-    const token = this.tokensService.getToken(bearerHeaderR);
+    const token = this.tokensService.getTokenFromCookie(bearerHeaderR);
     const validateToken: any = this.tokensService.validateRefreshToken(token);
     if (!validateToken) {
       throw new UnauthorizedException('Invalid refresh token');
@@ -64,7 +64,7 @@ export class DevicesService {
   }
 
   async deleteAllDevicesExceptCurrent(bearerHeaderR: string) {
-    const token = this.tokensService.getToken(bearerHeaderR);
+    const token = this.tokensService.getTokenFromCookie(bearerHeaderR);
     const validateToken: any = this.tokensService.validateRefreshToken(token);
     if (!validateToken) {
       throw new UnauthorizedException('Invalid refresh token');

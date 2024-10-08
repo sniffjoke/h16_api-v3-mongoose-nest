@@ -65,6 +65,27 @@ export class AuthController {
     return newUser
   }
 
+  // async refreshToken(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     const {refreshToken, accessToken} = await authService.refreshToken(req.cookies.refreshToken)
+  //     res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true})
+  //     res.status(200).json({accessToken})
+  //   } catch (e) {
+  //     next(e)
+  //   }
+  // }
+  //
+  //
+  // async logout(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     await authService.logoutUser(req.cookies.refreshToken as string)
+  //     res.clearCookie('refreshToken')
+  //     res.status(204).send('Logout')
+  //   } catch (e) {
+  //     next(e)
+  //   }
+  // }
+
   // @UsePipes(ValidationPipe)
   @Post("registration-confirmation")
   @HttpCode(204)

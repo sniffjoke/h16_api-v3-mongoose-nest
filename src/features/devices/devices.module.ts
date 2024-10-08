@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { DevicesService } from "./application/devices.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { DeviceEntity, DeviceSchema } from './domain/devices.entity';
+import { DevicesController } from './api/devices.controller';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { DeviceEntity, DeviceSchema } from './domain/devices.entity';
         schema: DeviceSchema,
     }]),
   ],
-  controllers: [],
+  controllers: [DevicesController],
   providers: [
     DevicesService
   ],
