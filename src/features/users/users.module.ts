@@ -8,6 +8,7 @@ import { User, UserSchema } from "./domain/users.entity";
 import { UuidModule } from "nestjs-uuid";
 import { TokensModule } from "../tokens/tokens.module";
 import { CryptoModule } from "../../core/modules/crypto/crypto.module";
+import { DevicesModule } from '../devices/devices.module';
 
 @Global()
 @Module({
@@ -15,6 +16,7 @@ import { CryptoModule } from "../../core/modules/crypto/crypto.module";
     CryptoModule,
     UuidModule,
     TokensModule,
+    DevicesModule,
     MongooseModule.forFeature([{
       name: User.name,
       schema: UserSchema
@@ -32,7 +34,8 @@ import { CryptoModule } from "../../core/modules/crypto/crypto.module";
     UsersService,
     UsersRepository,
     UsersQueryRepository,
-    TokensModule
+    TokensModule,
+    DevicesModule
   ]
 })
 export class UsersModule {

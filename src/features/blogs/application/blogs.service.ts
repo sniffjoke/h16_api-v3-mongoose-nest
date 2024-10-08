@@ -1,6 +1,6 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {BlogsRepository} from "../infrastructure/blogs.repository";
-import {Blog} from "../domain/blogs.entity";
+import { Blog } from '../domain/blogs.entity';
 import {Model, UpdateWriteOpResult} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {BlogCreateModel} from "../api/models/input/create-blog.input.model";
@@ -13,26 +13,30 @@ export class BlogsService {
     ) {
     }
 
+    // метод execute pattern
     async createBlog(blog: BlogCreateModel): Promise<string> {
+        //
         const newBlog = new this.blogModel(blog)
+        // const newBlog = this.blogModel.creatBlog(blog)
+        // newBlog.updateBlog()
         const saveData = await this.blogsRepository.saveBlog(newBlog)
         return saveData._id.toString()
     }
 
     async updateBlog(id: string, dto: BlogCreateModel): Promise<UpdateWriteOpResult> {
-        const blog = await this.blogModel.findById(id)
-        if (!blog) {
-            throw new NotFoundException(`Blog with id ${id} not found`)
-        }
+        const blog = await this.findBlogById(id)
+        // if (!blog) {
+        //     throw new NotFoundException(`Blog with id ${id} not found`)
+        // }
         const updateBlog = await this.blogsRepository.updateBlogById(blog.id, dto)
         return updateBlog
     }
 
     async deleteBlog(id: string) {
-        const findedBlog = await this.blogsRepository.findBlogById(id)
-        if (!findedBlog) {
-            throw new NotFoundException(`Blog with id ${id} not found`)
-        }
+        const findedBlog = await this.findBlogById(id)
+        // if (!findedBlog) {
+        //     throw new NotFoundException(`Blog with id ${id} not found`)
+        // }
         const deleteBlog = await this.blogsRepository.deleteBlog(id)
         return deleteBlog
     }

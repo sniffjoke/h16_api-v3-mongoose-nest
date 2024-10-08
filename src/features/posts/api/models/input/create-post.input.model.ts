@@ -2,6 +2,7 @@ import { IsString, Length } from 'class-validator';
 import { Trim } from '../../../../../core/decorators/transform/trim';
 import { BlogExists } from '../../../../../core/decorators/async-validate/blog-is-exist.decorator';
 
+// BasePostCreateModel PostCreateModel
 export class PostCreateModelWithParams {
     @Trim()
     @IsString({message: 'Должно быть строковым значением'})
@@ -20,6 +21,8 @@ export class PostCreateModelWithParams {
 
 }
 
+// Mapped Type NestJs
+// PostCreateModelWithBlogId
 export class PostCreateModel extends PostCreateModelWithParams {
     @BlogExists()
     blogId: string;

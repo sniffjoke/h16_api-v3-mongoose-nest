@@ -13,6 +13,9 @@ import {
 import { AuthOutputModel, RecoveryPasswordModel } from "./models/output/auth.output.model";
 import { JwtAuthGuard } from "../../../core/guards/jwt-auth.guard";
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { UserAgent } from '../../../core/decorators/common/user-agent.decorator';
+import { IpAddress } from '../../../core/decorators/common/ip-address.decorator';
+
 
 @Controller("auth")
 export class AuthController {
@@ -36,9 +39,12 @@ export class AuthController {
   @UseGuards(ThrottlerGuard)
   async login(
     @Body() loginDto: LoginDto,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
+    @IpAddress() ip: string,
+    @UserAgent() userAgent: string,
   ): Promise<AuthOutputModel> {
-    const { accessToken, refreshToken } = await this.authService.login(loginDto);
+    const { accessToken, refreshToken } = await this.authService.login(loginDto, ip, userAgent);
+    console.log(ip);
     response.cookie('refreshToken', refreshToken, {
       secure: true,
       httpOnly: true,

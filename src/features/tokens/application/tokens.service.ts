@@ -8,7 +8,7 @@ import { SETTINGS } from "../../../core/settings/settings";
 @Injectable()
 export class TokensService {
   constructor(
-    @InjectModel(TokenEntity.name) private userModel: Model<TokenEntity>,
+    @InjectModel('TokenEntity') private tokensModel: Model<TokenEntity>,
     private readonly jwtService: JwtService
   ) {
   }
@@ -71,6 +71,21 @@ export class TokensService {
 
   decodeToken(token: string) {
     return this.jwtService.decode(token);
+  }
+
+  async findToken(filter: any) {
+    const findedToken = await this.tokensModel.findOne(filter)
+    return findedToken
+  }
+
+  async updateManyTokensInDb(filter: any, payload: any) {
+    const updateTokens = await this.tokensModel.updateMany(filter, payload)
+    return updateTokens
+  }
+
+  async saveToken(tokenData: any) {
+    const saveToken = await this.tokensModel.create(tokenData)
+    return saveToken
   }
 
 }
