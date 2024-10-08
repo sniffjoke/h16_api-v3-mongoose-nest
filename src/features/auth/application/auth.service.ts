@@ -86,7 +86,7 @@ export class AuthService {
         }
     }
 
-    async refreshToken(tokenHeaderR: string) {
+    async refreshToken(tokenHeaderR: any) {
         const token = this.tokensService.getTokenFromCookie(tokenHeaderR)
         const tokenValidate: any = this.tokensService.validateRefreshToken(token)
         if (!tokenValidate) {
@@ -124,6 +124,27 @@ export class AuthService {
             accessToken
         }
 
+    }
+
+    async logoutUser(tokenHeaderR: any) {
+        const token = this.tokensService.getTokenFromCookie(tokenHeaderR)
+        const tokenValidate: any = this.tokensService.validateRefreshToken(token)
+        if (!tokenValidate) {
+            throw new UnauthorizedException('Invalid refresh token')
+        }
+        const isTokenExists: any = await this.tokensService.findToken({ refreshToken: token })
+        if (!isTokenExists || isTokenExists.blackList) {
+            throw new UnauthorizedException('Refresh token not valid')
+        }
+        const updateTokenInfo = await this.tokensService.updateManyTokensInDb({deviceId: tokenValidate.deviceId}, {$set: {blackList: true}})
+        if (!updateTokenInfo) {
+            throw new UnauthorizedException('Something went wrong')
+        }
+        const updateDevices = await this.devicesService.deleteDeviceById({deviceId: tokenValidate.deviceId})
+        if (!updateDevices) {
+            throw new UnauthorizedException('Unfortunately to update devices')
+        }
+        return updateDevices
     }
 
 }

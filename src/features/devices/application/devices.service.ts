@@ -95,4 +95,9 @@ export class DevicesService {
     return updateDevice
   }
 
+  async deleteDeviceById(filter: any) {
+    const deleteDevice = await this.deviceModel.deleteOne(filter)
+    return deleteDevice
+  }
+
 }

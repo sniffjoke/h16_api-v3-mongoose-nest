@@ -66,6 +66,7 @@ export class AuthController {
   }
 
   @Post('refresh-token')
+  @HttpCode(200)
   async refreshToken(@Req() req: Request, @Res({ passthrough: true }) response: Response) {
     const { refreshToken, accessToken } = await this.authService.refreshToken(req.cookies);
     response.cookie('refreshToken', refreshToken, {
@@ -78,16 +79,13 @@ export class AuthController {
     };
   }
 
-
-  // async logout(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     await authService.logoutUser(req.cookies.refreshToken as string)
-  //     res.clearCookie('refreshToken')
-  //     res.status(204).send('Logout')
-  //   } catch (e) {
-  //     next(e)
-  //   }
-  // }
+  @Post('logout')
+  @HttpCode(204)
+  async logout(@Req() req: Request, @Res({ passthrough: true }) response: Response) {
+    const logoutUser = await this.authService.logoutUser(req.cookies);
+    response.clearCookie('refreshToken');
+    return logoutUser;
+  }
 
   // @UsePipes(ValidationPipe)
   @Post('registration-confirmation')
