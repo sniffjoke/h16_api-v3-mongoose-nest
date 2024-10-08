@@ -6,6 +6,8 @@ import { Post } from '../../posts/domain/posts.entity';
 import { CommentEntity } from '../../comments/domain/comments.entity';
 import { User } from '../../users/domain/users.entity';
 import { LikeEntity } from '../../likes/domain/likes.entity';
+import { DeviceEntity } from '../../devices/domain/devices.entity';
+import { TokenEntity } from '../../tokens/domain/tokens.entity';
 
 @Injectable()
 export class TestingService {
@@ -15,6 +17,8 @@ export class TestingService {
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(CommentEntity.name) private commentModel: Model<CommentEntity>,
     @InjectModel(LikeEntity.name) private likeModel: Model<LikeEntity>,
+    @InjectModel(DeviceEntity.name) private deviceModel: Model<DeviceEntity>,
+    @InjectModel(TokenEntity.name) private tokenModel: Model<TokenEntity>,
   ) {
   }
 
@@ -24,12 +28,16 @@ export class TestingService {
     const deleteUsers = await this.userModel.deleteMany();
     const deleteComments = await this.commentModel.deleteMany();
     const deleteLikes = await this.likeModel.deleteMany();
+    const deleteDevices = await this.deviceModel.deleteMany();
+    const deleteTokens = await this.tokenModel.deleteMany();
     return {
       deleteBlogs,
       deletePosts,
       deleteUsers,
       deleteComments,
       deleteLikes,
+      deleteDevices,
+      deleteTokens
     };
   }
 

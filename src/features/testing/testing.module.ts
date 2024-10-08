@@ -7,6 +7,8 @@ import {Post, PostSchema} from "../posts/domain/posts.entity";
 import {CommentEntity, CommentSchema} from "../comments/domain/comments.entity";
 import {User, UserSchema} from "../users/domain/users.entity";
 import { LikeEntity, LikeSchema } from '../likes/domain/likes.entity';
+import { DeviceEntity, DeviceSchema } from '../devices/domain/devices.entity';
+import { TokenEntity, TokenSchema } from '../tokens/domain/tokens.entity';
 
 @Module({
     imports: [
@@ -29,6 +31,14 @@ import { LikeEntity, LikeSchema } from '../likes/domain/likes.entity';
         MongooseModule.forFeature([{
             name: LikeEntity.name,
             schema: LikeSchema,
+        }]),
+        MongooseModule.forFeature([{
+            name: DeviceEntity.name,
+            schema: DeviceSchema,
+        }]),
+        MongooseModule.forFeature([{
+            name: TokenEntity.name,
+            schema: TokenSchema,
         }]),
     ],
     controllers: [TestingController],

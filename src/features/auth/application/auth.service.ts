@@ -96,7 +96,7 @@ export class AuthService {
         if (!isTokenExists || isTokenExists.blackList) {
             throw new UnauthorizedException('Refresh token not valid')
         }
-        const updateTokenInfo = await this.tokensService.updateManyTokensInDb({refreshToken: token}, {$set: {blackList: true}})
+        const updateTokenInfo = await this.tokensService.updateManyTokensInDb({refreshToken: isTokenExists.refreshToken}, {$set: {blackList: true}})
         if (!updateTokenInfo) {
             throw new UnauthorizedException('Something went wrong')
         }
