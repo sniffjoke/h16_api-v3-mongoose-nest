@@ -78,8 +78,11 @@ export class DevicesService {
     if (!validateToken) {
       throw new UnauthorizedException('Invalid refresh token');
     }
-    console.log({ userId: validateToken._id, deviceId: { $ne: validateToken.deviceId }});
-    await this.deviceModel.deleteMany({ userId: validateToken._id, deviceId: { $ne: validateToken.deviceId } });
+    const user = await this.usersRepository.findUserById(validateToken._id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await this.deviceModel.deleteMany({ userId: user._id, deviceId: { $ne: validateToken.deviceId } });
     const updateTokensInfo = await this.tokensService.updateManyTokensInDb({
       userId: validateToken._id,
       deviceId: { $ne: validateToken.deviceId },

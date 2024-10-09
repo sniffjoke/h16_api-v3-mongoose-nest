@@ -20,7 +20,6 @@ export class AuthService {
     }
 
     async login(loginDto: LoginDto, myIp: string, userAgent: string) {
-        console.log(myIp);
         const findedUser = await this.userModel.findOne({login: loginDto.loginOrEmail});
         if (!findedUser) {
             throw new UnauthorizedException('User not found');
@@ -32,6 +31,7 @@ export class AuthService {
         // const myIp = ip.address()
         // const userAgent = req.headers['user-agent'] as string;
         const findSession = await this.devicesService.findDevice({userId: findedUser._id, ip: myIp, title: userAgent})
+        console.log(findSession);
         // const deviceData: IDevice = {
         const deviceData: any = {
             userId: findedUser._id,
