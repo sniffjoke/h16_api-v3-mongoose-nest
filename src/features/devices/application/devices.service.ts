@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -56,14 +55,14 @@ export class DevicesService {
     }
     const findToken = await this.tokensService.findToken({ deviceId });
     if (!findToken) {
-        throw new BadRequestException('Invalid deviceId');
+        throw new NotFoundException('Invalid deviceId');
     }
     if (validateToken._id !== findToken?.userId.toString()) {
       throw new ForbiddenException('Not your device');
     }
     const findSession = await this.findDevice({deviceId})
     if (!findSession) {
-      throw new BadRequestException('Not found device');
+      throw new NotFoundException('Not found device');
     }
     await this.deviceModel.deleteOne({ deviceId });
     const updateTokensInfo = await this.tokensService.updateManyTokensInDb({ deviceId }, { $set: { blackList: true } });
