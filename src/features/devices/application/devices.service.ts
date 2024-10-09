@@ -78,6 +78,7 @@ export class DevicesService {
     if (!validateToken) {
       throw new UnauthorizedException('Invalid refresh token');
     }
+    console.log({ userId: validateToken._id, deviceId: { $ne: validateToken.deviceId }});
     await this.deviceModel.deleteMany({ userId: validateToken._id, deviceId: { $ne: validateToken.deviceId } });
     const updateTokensInfo = await this.tokensService.updateManyTokensInDb({
       userId: validateToken._id,

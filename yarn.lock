@@ -1216,13 +1216,6 @@
     "@types/scheduler" "^0.16"
     csstype "^3.0.2"
 
-"@types/request-ip@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/@types/request-ip/-/request-ip-0.0.41.tgz#c22a3244df2573402989346062851b06b7a5ac4e"
-  integrity sha512-Qzz0PM2nSZej4lsLzzNfADIORZhhxO7PED0fXpg4FjXiHuJ/lMyUg+YFF5q8x9HPZH3Gl6N+NOM8QZjItNgGKg==
-  dependencies:
-    "@types/node" "*"
-
 "@types/scheduler@^0.16":
   version "0.16.8"
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.8.tgz#ce5ace04cfeabe7ef87c0091e50752e36707deff"
@@ -3683,6 +3676,11 @@ inquirer@9.2.15:
     strip-ansi "^6.0.1"
     wrap-ansi "^6.2.0"
 
+ip@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ip/-/ip-2.0.1.tgz#e8f3595d33a3ea66490204234b77636965307105"
+  integrity sha512-lJUL9imLTNi1ZfXT+DU6rBBdbiKGBuay9B6xGSPVjUeQwaH1RIGqef8RZkUtHioLmSNpPR5M4HVKJGm1j8FWVQ==
+
 ipaddr.js@1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
@@ -5945,11 +5943,6 @@ repeat-string@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
   integrity sha512-PV0dzCYDNfRi1jCDbJzpW7jNNDRuCOG/jI5ctQcGKt/clZD+YcPS3yIlWuTJMmESC8aevCFmWJy5wjAFgNqN6w==
-
-request-ip@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/request-ip/-/request-ip-3.3.0.tgz#863451e8fec03847d44f223e30a5d63e369fa611"
-  integrity sha512-cA6Xh6e0fDBBBwH77SLJaJPBmD3nWVAcF9/XAcsrIHdjhFzFiB5aNQFytdjCGPezU3ROwrR11IddKAM08vohxA==
 
 require-directory@^2.1.1:
   version "2.1.1"

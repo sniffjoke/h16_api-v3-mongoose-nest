@@ -20,6 +20,7 @@ export class AuthService {
     }
 
     async login(loginDto: LoginDto, myIp: string, userAgent: string) {
+        console.log(myIp);
         const findedUser = await this.userModel.findOne({login: loginDto.loginOrEmail});
         if (!findedUser) {
             throw new UnauthorizedException('User not found');

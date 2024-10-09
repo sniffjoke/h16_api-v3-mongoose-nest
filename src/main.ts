@@ -6,7 +6,6 @@ import { useContainer } from "class-validator";
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { BadRequestExceptionFilter } from './core/exceptions/exception-filters/bad-request-exception-filter';
 import cookieParser from 'cookie-parser'
-import * as requestIp from 'request-ip'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -37,7 +36,6 @@ async function bootstrap() {
       },
     }),
   );
-  app.use(requestIp.mw())
   app.use(cookieParser())
   await app.listen(SETTINGS.PORT, () => console.log('DB connect'));
 }
