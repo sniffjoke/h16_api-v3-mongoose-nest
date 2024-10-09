@@ -44,7 +44,7 @@ export class AuthController {
     @UserAgent() userAgent: string,
   ): Promise<AuthOutputModel> {
     const { accessToken, refreshToken } = await this.authService.login(loginDto, ip, userAgent);
-    console.log(ip);
+    // console.log(ip);
     response.cookie('refreshToken', refreshToken, {
       secure: true,
       httpOnly: true,

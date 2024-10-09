@@ -52,16 +52,16 @@ export class DevicesService {
     const token = this.tokensService.getTokenFromCookie(bearerHeaderR);
     const validateToken: any = this.tokensService.validateRefreshToken(token);
     if (!validateToken) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('Invalid refresh token - 1');
     }
     const findToken = await this.tokensService.findToken({ deviceId });
     if (!findToken) {
-      throw new UnauthorizedException('Invalid refresh token');
+        throw new BadRequestException('Invalid deviceId');
     }
     if (validateToken._id !== findToken?.userId.toString()) {
       throw new ForbiddenException('Not your device');
     }
-    const findSession = await this.findDevice({_id: deviceId})
+    const findSession = await this.findDevice({deviceId})
     if (!findSession) {
       throw new BadRequestException('Not found device');
     }
