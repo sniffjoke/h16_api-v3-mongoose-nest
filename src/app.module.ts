@@ -13,6 +13,7 @@ import { SETTINGS } from "./core/settings/settings";
 import { BlogIsExistConstraint } from './core/decorators/async-validate/blog-is-exist.decorator';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { DevicesModule } from './features/devices/devices.module';
+import { SessionExists, SessionIsExistConstraint } from './core/decorators/async-validate/session-is-exist.decorator';
 
 @Module({
   imports: [
@@ -55,7 +56,8 @@ import { DevicesModule } from './features/devices/devices.module';
     // CheckEmailStatusConstraint,
     // CodeIsExistConstraint,
     // CheckCodeStatusConstraint
-    BlogIsExistConstraint
+    BlogIsExistConstraint,
+    SessionIsExistConstraint
   ]
 })
 export class AppModule {}

@@ -1,4 +1,10 @@
-import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { DeviceEntity } from '../domain/devices.entity';
@@ -54,6 +60,10 @@ export class DevicesService {
     }
     if (validateToken._id !== findToken?.userId.toString()) {
       throw new ForbiddenException('Not your device');
+    }
+    const findSession = await this.findDevice({_id: deviceId})
+    if (!findSession) {
+      throw new BadRequestException('Not found device');
     }
     await this.deviceModel.deleteOne({ deviceId });
     const updateTokensInfo = await this.tokensService.updateManyTokensInDb({ deviceId }, { $set: { blackList: true } });
